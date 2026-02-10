@@ -1,21 +1,20 @@
 
-       /     /   ▶ API Toolkit
-      / --- /      A comprehensive collection of tools designed by Hiro to simplify common tasks in
-     /     /       API development.
+# API Toolkit
 
-[![NPM Package](https://img.shields.io/npm/v/@hirosystems/api-toolkit.svg?style=flat-square)](https://www.npmjs.org/package/@hirosystems/api-toolkit)
+[![NPM Package](https://img.shields.io/npm/v/@stacks/api-toolkit.svg?style=flat-square)](https://www.npmjs.org/package/@stacks/api-toolkit)
 
-The API Toolkit Library is a comprehensive collection of tools designed by Hiro to simplify common
-tasks in API development. This library provides functionalities for database management, application
-shutdown handlers, migration helpers, server version management, etc. It aims to streamline the
-development process and improve code quality by offering convenient and reusable modules.
+The API Toolkit Library is a comprehensive collection of tools designed by Stacks Labs to simplify
+common tasks in API development. This library provides functionalities for database management,
+application shutdown handlers, migration helpers, server version management, etc. It aims to
+streamline the development process and improve code quality by offering convenient and reusable
+modules.
 
 ## Installation
 
 You can start by installing the API Toolkit Library using npm:
 
 ```
-npm install @hirosystems/api-toolkit
+npm install @stacks/api-toolkit
 ```
 
 You should also customize the following ENV variables that control how log messages are displayed:

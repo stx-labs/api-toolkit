@@ -1,5 +1,5 @@
 {
-  "name": "@hirosystems/api-toolkit",
+  "name": "@stacks/api-toolkit",
   "version": "1.12.0",
   "description": "API development toolkit",
   "main": "./dist/index.js",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hirosystems/api-toolkit.git"
+    "url": "git+https://github.com/stx-labs/api-toolkit.git"
   },
   "keywords": [
     "api",
@@ -28,12 +28,12 @@
     "dist/",
     "bin/"
   ],
-  "author": "Hiro Systems PBC <engineering@hiro.so> (https://hiro.so)",
+  "author": "Stacks Labs",
   "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/hirosystems/api-toolkit/issues"
+    "url": "https://github.com/stx-labs/api-toolkit/issues"
   },
-  "homepage": "https://github.com/hirosystems/api-toolkit#readme",
+  "homepage": "https://github.com/stx-labs/api-toolkit#readme",
   "prettier": "@stacks/prettier-config",
   "engines": {
     "node": ">=22"
