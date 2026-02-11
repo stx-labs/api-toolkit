@@ -1,6 +1,6 @@
 {
   "name": "@stacks/api-toolkit",
-  "version": "1.12.1",
+  "version": "1.12.2",
   "description": "API development toolkit",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -11,7 +11,8 @@
     "lint:prettier": "prettier --check src/**/*.ts",
     "testenv:run": "docker compose -f docker/docker-compose.dev.postgres.yml up",
     "testenv:stop": "docker compose -f docker/docker-compose.dev.postgres.yml down -v -t 0",
-    "testenv:logs": "docker compose -f docker/docker-compose.dev.postgres.yml logs -t -f"
+    "testenv:logs": "docker compose -f docker/docker-compose.dev.postgres.yml logs -t -f",
+    "prepublishOnly": "npm run build"
   },
   "bin": {
     "api-toolkit-git-info": "./bin/api-toolkit-git-info.js"
