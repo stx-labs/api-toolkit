@@ -67,7 +67,7 @@
     "@types/node": "^22.14.1",
     "fastify": "^5.8.4",
     "fastify-metrics": "^12.1.0",
-    "node-pg-migrate": "^8.0.4",
+    "node-pg-migrate": "^7.9.1",
     "pino": "^8.11.0",
     "postgres": "^3.4.8"
   }

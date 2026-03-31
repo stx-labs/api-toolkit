@@ -1,16 +1,15 @@
+import PgMigrate from 'node-pg-migrate';
+import type { Logger as PgMigrateLogger, MigrationDirection } from 'node-pg-migrate/dist/types';
 import { logger } from '../logger';
-import { PgConnectionArgs, PgSqlClient, connectPostgres, standardizedConnectionArgs } from './connection';
+import {
+  PgConnectionArgs,
+  PgSqlClient,
+  connectPostgres,
+  standardizedConnectionArgs,
+} from './connection';
 import { isDevEnv, isTestEnv } from '../helpers/values';
 
-export type MigrationDirection = 'up' | 'down';
-
-/** Matches `node-pg-migrate` runner `logger` option (avoids ESM type imports from a CJS build). */
-export type PgMigrateLogger = {
-  debug?: (msg: string) => void;
-  info: (msg: string) => void;
-  warn: (msg: string) => void;
-  error: (msg: string) => void;
-};
+export type { Logger as PgMigrateLogger, MigrationDirection } from 'node-pg-migrate/dist/types';
 
 export interface MigrationOptions {
   /** Bypass the NODE_ENV check when performing a "down" migration which irreversibly drops data. */
@@ -43,8 +42,7 @@ export async function runMigrations(
     );
   }
   const args = standardizedConnectionArgs(connectionArgs, 'migrations');
-  const { runner } = await import('node-pg-migrate');
-  await runner({
+  await PgMigrate({
     dir,
     direction,
     count: Infinity,
