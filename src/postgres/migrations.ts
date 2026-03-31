@@ -1,8 +1,16 @@
-import PgMigrate from 'node-pg-migrate';
-import { Logger as PgMigrateLogger, MigrationDirection } from 'node-pg-migrate/dist/types';
 import { logger } from '../logger';
-import { PgConnectionArgs, connectPostgres, standardizedConnectionArgs } from './connection';
+import { PgConnectionArgs, PgSqlClient, connectPostgres, standardizedConnectionArgs } from './connection';
 import { isDevEnv, isTestEnv } from '../helpers/values';
+
+export type MigrationDirection = 'up' | 'down';
+
+/** Matches `node-pg-migrate` runner `logger` option (avoids ESM type imports from a CJS build). */
+export type PgMigrateLogger = {
+  debug?: (msg: string) => void;
+  info: (msg: string) => void;
+  warn: (msg: string) => void;
+  error: (msg: string) => void;
+};
 
 export interface MigrationOptions {
   /** Bypass the NODE_ENV check when performing a "down" migration which irreversibly drops data. */
@@ -35,7 +43,8 @@ export async function runMigrations(
     );
   }
   const args = standardizedConnectionArgs(connectionArgs, 'migrations');
-  await PgMigrate({
+  const { runner } = await import('node-pg-migrate');
+  await runner({
     dir,
     direction,
     count: Infinity,
@@ -109,13 +118,13 @@ export async function databaseHasData(
     const ignoreMigrationTables = opts?.ignoreMigrationTables ?? false;
     const tableName = opts?.migrationsTable ?? 'pgmigrations';
     const result = await sql<{ count: number }[]>`
-      SELECT COUNT(*)
+      SELECT COUNT(*)::int AS count
       FROM pg_class c
       JOIN pg_namespace s ON s.oid = c.relnamespace
       WHERE s.nspname = ${sql.options.connection.search_path}
       ${ignoreMigrationTables ? sql`AND c.relname NOT LIKE ${tableName}::text || '%'` : sql``}
     `;
-    return result.count > 0 && result[0].count > 0;
+    return Number(result[0]?.count) > 0;
   } catch (error: any) {
     if (error.message?.includes('does not exist')) {
       return false;
@@ -144,7 +153,8 @@ export async function dangerousDropAllTables(
   });
   const schema = sql.options.connection.search_path;
   try {
-    await sql.begin(async sql => {
+    await sql.begin(async txSql => {
+      const sql = txSql as unknown as PgSqlClient;
       const relNamesQuery = async (kind: string) => sql<{ relname: string }[]>`
         SELECT relname
         FROM pg_class c

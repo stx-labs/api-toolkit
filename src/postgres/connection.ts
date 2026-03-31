@@ -5,7 +5,7 @@ import { stopwatch, timeout } from '../helpers/time';
 import { PG_TYPE_MAPPINGS } from './types';
 
 /** Postgres client instance */
-export type PgSqlClient = postgres.Sql<any> | postgres.TransactionSql<any>;
+export type PgSqlClient = postgres.Sql<any>;
 /** Postgres pending query or query fragment */
 export type PgSqlQuery = postgres.PendingQuery<postgres.Row[]>;
 export type PgSslMode = 'require' | 'allow' | 'prefer' | 'verify-full' | boolean | object;
@@ -167,7 +167,7 @@ export function getPostgres({
       connection: {
         application_name: args.application_name,
         search_path: args.schema,
-        statement_timeout: connectionConfig?.statementTimeout?.toString(),
+        statement_timeout: connectionConfig?.statementTimeout,
       },
     });
   }

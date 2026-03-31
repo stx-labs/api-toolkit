@@ -1,6 +1,7 @@
 import { AsyncLocalStorage } from 'async_hooks';
 import { PgSqlClient } from '.';
 import { isProdEnv } from '../helpers/values';
+import * as postgres from 'postgres';
 
 /**
  * AsyncLocalStorage used to determine if the current async context is running inside a SQL
@@ -27,7 +28,7 @@ export abstract class BasePgStore {
   get sql(): PgSqlClient {
     const dbName = this._sql.options.database?.toString() ?? 'default';
     const sqlContext = sqlTransactionContext.getStore();
-    return sqlContext ? sqlContext[dbName] : this._sql;
+    return sqlContext ? (sqlContext[dbName] as unknown as PgSqlClient) : this._sql;
   }
   /** The raw SQL client instance. */
   readonly _sql: PgSqlClient;
@@ -60,7 +61,8 @@ export abstract class BasePgStore {
       return callback(sql) as UnwrapPromiseArray<T>;
     }
     // Otherwise, start a transaction and store the scoped connection in the current async context.
-    return this._sql.begin(readOnly ? 'read only' : 'read write', sql => {
+    return this._sql.begin(readOnly ? 'read only' : 'read write', txSql => {
+      const sql = txSql as unknown as PgSqlClient;
       const currentStore = sqlTransactionContext.getStore() ?? {};
       return sqlTransactionContext.run({ ...currentStore, [dbName]: sql }, () => callback(sql));
     });
