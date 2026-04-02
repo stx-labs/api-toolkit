@@ -5,11 +5,11 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: './tsconfig.json',
+    project: ['./packages/api-toolkit/tsconfig.json', './packages/api-test-toolkit/tsconfig.json'],
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  ignorePatterns: ['*.config.js', 'bin/*.js'],
+  ignorePatterns: ['*.config.js', '**/bin/*.js', '**/dist/**'],
   plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc', 'prettier'],
   rules: {
     'prettier/prettier': 'error',

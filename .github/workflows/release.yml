@@ -31,7 +31,7 @@ jobs:
         run: npm ci --audit=false
 
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public -w @stacks/api-toolkit
 
   github-release:
     runs-on: ubuntu-latest

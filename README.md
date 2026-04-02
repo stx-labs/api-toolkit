@@ -3,6 +3,15 @@
 
 [![NPM Package](https://img.shields.io/npm/v/@stacks/api-toolkit.svg?style=flat-square)](https://www.npmjs.org/package/@stacks/api-toolkit)
 
+This repository is an **npm workspace** monorepo:
+
+| Package | Description |
+|--------|-------------|
+| [`packages/api-toolkit`](./packages/api-toolkit/) | Published as **`@stacks/api-toolkit`** |
+| [`packages/api-test-toolkit`](./packages/api-test-toolkit/) | **`@stacks/api-test-toolkit`** — optional test helpers (not required for production) |
+
+From the repo root: `npm install`, `npm run build`, `npm test`, `npm run lint:eslint`.
+
 The API Toolkit Library is a comprehensive collection of tools designed by Stacks Labs to simplify
 common tasks in API development. This library provides functionalities for database management,
 application shutdown handlers, migration helpers, server version management, etc. It aims to

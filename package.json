@@ -1,34 +1,23 @@
 {
-  "name": "@stacks/api-toolkit",
-  "version": "1.12.2",
-  "description": "API development toolkit",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "name": "api-toolkit-monorepo",
+  "private": true,
+  "description": "Monorepo for @stacks/api-toolkit and related packages",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "build": "rimraf ./dist && tsc --project tsconfig.build.json && copyfiles -u 1 ./src/server-version/*.mjs ./dist",
-    "test": "jest --runInBand",
-    "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx -f unix",
-    "lint:prettier": "prettier --check src/**/*.ts",
-    "testenv:run": "docker compose -f docker/docker-compose.dev.postgres.yml up",
-    "testenv:stop": "docker compose -f docker/docker-compose.dev.postgres.yml down -v -t 0",
-    "testenv:logs": "docker compose -f docker/docker-compose.dev.postgres.yml logs -t -f",
-    "prepublishOnly": "npm run build"
-  },
-  "bin": {
-    "api-toolkit-git-info": "./bin/api-toolkit-git-info.js"
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test -w @stacks/api-toolkit",
+    "lint:eslint": "eslint packages --ext .ts,.tsx -f unix",
+    "lint:prettier": "prettier --check \"packages/*/src/**/*.ts\"",
+    "testenv:run": "npm run testenv:run -w @stacks/api-toolkit",
+    "testenv:stop": "npm run testenv:stop -w @stacks/api-toolkit",
+    "testenv:logs": "npm run testenv:logs -w @stacks/api-toolkit"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stx-labs/api-toolkit.git"
   },
-  "keywords": [
-    "api",
-    "toolkit"
-  ],
-  "files": [
-    "dist/",
-    "bin/"
-  ],
   "author": "Stacks Labs",
   "license": "Apache 2.0",
   "bugs": {
@@ -58,17 +47,5 @@
     "ts-jest": "^29.3.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "@fastify/cors": "^11.2.0",
-    "@fastify/swagger": "^9.7.0",
-    "@fastify/type-provider-typebox": "^6.1.0",
-    "@sinclair/typebox": "^0.34.48",
-    "@types/node": "^22.14.1",
-    "fastify": "^5.8.4",
-    "fastify-metrics": "^12.1.0",
-    "node-pg-migrate": "^7.9.1",
-    "pino": "^8.11.0",
-    "postgres": "^3.4.8"
   }
 }
