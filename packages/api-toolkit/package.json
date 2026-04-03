@@ -6,6 +6,7 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc --project tsconfig.build.json && copyfiles -u 1 ./src/server-version/*.mjs ./dist",
+    "pretest": "npm run build --prefix ../..",
     "test": "NODE_ENV=test node --import tsx --test --test-global-setup=./tests/setup.ts --test-concurrency=1 \"tests/**/*.test.ts\"",
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx -f unix",
     "lint:prettier": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",

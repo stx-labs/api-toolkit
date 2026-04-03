@@ -84,9 +84,6 @@ jobs:
       - name: Install deps
         run: npm ci --audit=false
 
-      - name: Build test toolkit
-        run: npm run build -w @stacks/api-test-toolkit
-
       - name: Run tests
         run: npx c8 --reporter=lcov npm run test -w @stacks/api-toolkit
 
