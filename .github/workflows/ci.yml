@@ -31,7 +31,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
 
       - name: Cache node modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
@@ -73,7 +73,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
 
       - name: Cache node modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
@@ -84,27 +84,13 @@ jobs:
       - name: Install deps
         run: npm ci --audit=false
 
-      - name: Setup integration environment
-        run: |
-          sudo ufw disable
-          npm run testenv:run -- -d
-          npm run testenv:logs -- --no-color &> docker-compose-logs.txt &
-
       - name: Run tests
         run: npm run test:coverage -w @stacks/api-toolkit
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           files: packages/api-toolkit/coverage/lcov.info
-
-      - name: Print integration environment logs
-        run: cat docker-compose-logs.txt
-        if: failure()
-
-      - name: Teardown integration environment
-        run: npm run testenv:stop
-        if: always()
 
   version:
     runs-on: ubuntu-latest
