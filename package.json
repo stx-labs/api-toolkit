@@ -34,7 +34,6 @@
     "@stacks/eslint-config": "^1.2.0",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
-    "c8": "^10.1.3",
     "copyfiles": "^2.4.1",
     "eslint": "^8.36.0",
     "eslint-plugin-prettier": "^4.2.1",

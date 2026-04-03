@@ -85,7 +85,7 @@ jobs:
         run: npm ci --audit=false
 
       - name: Run tests
-        run: npm run test:coverage -w @stacks/api-toolkit
+        run: npx c8 --reporter=lcov npm run test -w @stacks/api-toolkit
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v6
