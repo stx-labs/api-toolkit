@@ -38,8 +38,9 @@ echo "Updating version to ${VERSION} (tag ${TAG}) on branch ${BRANCH}"
 echo ""
 
 # Update root package.json and package-lock.json
-echo "Updating root package.json..."
+echo "Updating package.json..."
 npm version "$VERSION" --no-git-tag-version
+npm version "$VERSION" --no-git-tag-version --workspaces
 
 echo ""
 echo "Done! Version ${VERSION} updated in all package files."
