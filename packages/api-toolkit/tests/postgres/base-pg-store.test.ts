@@ -1,12 +1,18 @@
 import * as assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { BasePgStore, sqlTransactionContext } from '../../src/postgres/base-pg-store.js';
-import { connectPostgres } from '../../src/postgres/connection.js';
+import { connectPostgres, PgSqlClient } from '../../src/postgres/connection.js';
 
 class TestPgStore extends BasePgStore {
   static async connect(): Promise<TestPgStore> {
     const sql = await connectPostgres({
-      connectionArgs: { database: 'postgres', user: 'postgres', password: 'postgres' },
+      connectionArgs: {
+        host: 'localhost',
+        port: 5432,
+        database: 'postgres',
+        user: 'postgres',
+        password: 'postgres',
+      },
       usageName: 'test',
     });
     return new TestPgStore(sql);
@@ -54,7 +60,8 @@ describe('BasePgStore', () => {
     const badInputs: unknown[] = ['0x123', '1234', '0xnoop', new Date(), 1234];
     for (const input of badInputs) {
       const query = async () =>
-        db.sql.begin(async sql => {
+        db.sql.begin(async txSql => {
+          const sql = txSql as unknown as PgSqlClient;
           await sql`
           CREATE TEMPORARY TABLE bytea_testing(
             value bytea NOT NULL
@@ -98,7 +105,7 @@ describe('BasePgStore', () => {
     }, {});
     Object.defineProperty(db, 'sql', {
       configurable: true,
-      get: () => failingSql as typeof db.sql,
+      get: () => failingSql as unknown as typeof db.sql,
     });
     try {
       const connected = await db.isConnected();
