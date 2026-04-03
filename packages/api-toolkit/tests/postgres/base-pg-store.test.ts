@@ -7,11 +7,11 @@ class TestPgStore extends BasePgStore {
   static async connect(): Promise<TestPgStore> {
     const sql = await connectPostgres({
       connectionArgs: {
-        host: 'localhost',
-        port: 5432,
-        database: 'postgres',
-        user: 'postgres',
-        password: 'postgres',
+        host: process.env.PGHOST ?? '127.0.0.1',
+        port: Number(process.env.PGPORT ?? '5432'),
+        database: process.env.PGDATABASE ?? 'postgres',
+        user: process.env.PGUSER ?? 'postgres',
+        password: process.env.PGPASSWORD ?? 'postgres',
       },
       usageName: 'test',
     });
