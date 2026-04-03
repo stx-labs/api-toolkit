@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { EventEmitter } from 'node:events';
-import assert from 'node:assert/strict';
+import * as assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { onceWhen } from '../../src/helpers/events.js';
 

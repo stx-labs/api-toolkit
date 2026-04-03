@@ -1,4 +1,4 @@
-import assert from 'node:assert/strict';
+import * as assert from 'node:assert/strict';
 
 /** Use in expected shapes to assert `typeof value === 'string'`. */
 export const anyString = Symbol('anyString');
@@ -26,7 +26,7 @@ export function assertShape(actual: unknown, expected: unknown): void {
   }
   assert.ok(typeof actual === 'object' && actual !== null);
   for (const [k, v] of Object.entries(expected)) {
-    assert.ok(k in (actual as object), `missing key ${k}`);
+    assert.ok(k in actual, `missing key ${k}`);
     assertShape((actual as Record<string, unknown>)[k], v);
   }
 }

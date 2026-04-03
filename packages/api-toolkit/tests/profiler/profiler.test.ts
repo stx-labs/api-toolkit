@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import assert from 'node:assert/strict';
+import * as assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { buildProfilerServer } from '../../src/profiler/server.js';
 import { timeout } from '../../src/helpers/time.js';

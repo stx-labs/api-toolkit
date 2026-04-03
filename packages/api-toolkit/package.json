@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rimraf ./dist && tsc --project tsconfig.build.json && copyfiles -u 1 ./src/server-version/*.mjs ./dist",
     "pretest": "npm run build",
-    "test": "NODE_ENV=test tsx --test --test-concurrency=1 \"tests/**/*.test.ts\"",
+    "test": "NODE_ENV=test node --import tsx --test --test-global-setup=./tests/setup.ts --test-concurrency=1 \"tests/**/*.test.ts\"",
     "pretest:coverage": "npm run build",
     "test:coverage": "NODE_ENV=test c8 -r lcov -r text -o coverage --clean tsx --test --test-concurrency=1 \"tests/**/*.test.ts\"",
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx -f unix",
@@ -47,7 +47,7 @@
     "@fastify/swagger": "^9.7.0",
     "@fastify/type-provider-typebox": "^6.1.0",
     "@sinclair/typebox": "^0.34.48",
-    "@types/node": "^22.14.1",
+    "@types/node": "^24.12.2",
     "fastify": "^5.8.4",
     "fastify-metrics": "^12.1.0",
     "node-pg-migrate": "^7.9.1",

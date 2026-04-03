@@ -26,7 +26,7 @@
   "homepage": "https://github.com/stx-labs/api-toolkit#readme",
   "prettier": "@stacks/prettier-config",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.5.0",

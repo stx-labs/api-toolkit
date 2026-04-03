@@ -1,7 +1,17 @@
 module.exports = {
   root: true,
   extends: ['@stacks/eslint-config', 'prettier'],
-  overrides: [],
+  overrides: [
+    {
+      files: ['**/*.test.ts', '**/tests/**/*.ts'],
+      rules: {
+        // node:test `describe` / `it` return promises that the runner consumes; awaiting them is optional/noisy.
+        '@typescript-eslint/no-floating-promises': 'off',
+        // Spies and SQL tagged templates often surface as `any` in tests.
+        '@typescript-eslint/no-unsafe-return': 'off',
+      },
+    },
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
@@ -9,7 +19,7 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  ignorePatterns: ['*.config.js', '**/bin/*.js', '**/dist/**'],
+  ignorePatterns: ['*.config.js', '**/bin/*.js', '**/dist/**', '**/coverage/**'],
   plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc', 'prettier'],
   rules: {
     'prettier/prettier': 'error',

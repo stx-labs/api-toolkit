@@ -189,8 +189,7 @@ describe('Worker tests', () => {
     const results = await Promise.allSettled(taskPromises);
 
     assert.ok(
-      watch.getElapsed() <
-        Math.ceil(taskCount / workerManager.workerCount) * taskTime * 1.5
+      watch.getElapsed() < Math.ceil(taskCount / workerManager.workerCount) * taskTime * 1.5
     );
 
     for (let i = 0; i < taskPromises.length; i++) {

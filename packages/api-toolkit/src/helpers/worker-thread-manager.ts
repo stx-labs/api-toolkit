@@ -125,23 +125,18 @@ export class WorkerThreadManager<TArgs extends unknown[], TResp> {
       const workerOpt: WorkerThreads.WorkerOptions = {
         workerData,
       };
-      const resolvedInit =
-        workerThreadInitFilename.endsWith('.ts')
-          ? path.join(
-              path.dirname(workerThreadInitFilename),
-              '../../dist/helpers/worker-thread-init.js'
-            )
-          : workerThreadInitFilename;
-      if (
-        resolvedInit !== workerThreadInitFilename &&
-        !fs.existsSync(resolvedInit)
-      ) {
+      const resolvedInit = workerThreadInitFilename.endsWith('.ts')
+        ? path.join(
+            path.dirname(workerThreadInitFilename),
+            '../../dist/helpers/worker-thread-init.js'
+          )
+        : workerThreadInitFilename;
+      if (resolvedInit !== workerThreadInitFilename && !fs.existsSync(resolvedInit)) {
         throw new Error(
           `Missing compiled worker thread bootstrap at ${resolvedInit}. Run \`npm run build\` in @stacks/api-toolkit before running tests that use worker threads.`
         );
       }
-      const needsTsLoader =
-        resolvedInit.endsWith('.ts') || this.workerFile.endsWith('.ts');
+      const needsTsLoader = resolvedInit.endsWith('.ts') || this.workerFile.endsWith('.ts');
       if (needsTsLoader) {
         if (process.env.NODE_ENV !== 'test') {
           throw new Error(

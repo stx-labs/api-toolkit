@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 import { spawnSync, execSync } from 'child_process';
-import assert from 'node:assert/strict';
+import * as assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { getServerVersion } from '../../src/server-version/index.js';
 import { isDebugging } from '../../src/helpers/is-debugging.js';

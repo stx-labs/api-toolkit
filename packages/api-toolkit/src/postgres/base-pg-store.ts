@@ -61,11 +61,14 @@ export abstract class BasePgStore {
       return callback(sql) as UnwrapPromiseArray<T>;
     }
     // Otherwise, start a transaction and store the scoped connection in the current async context.
-    return this._sql.begin(readOnly ? 'read only' : 'read write', (txSql: postgres.TransactionSql<any>) => {
-      const sql = txSql as unknown as PgSqlClient;
-      const currentStore = sqlTransactionContext.getStore() ?? {};
-      return sqlTransactionContext.run({ ...currentStore, [dbName]: sql }, () => callback(sql));
-    });
+    return this._sql.begin(
+      readOnly ? 'read only' : 'read write',
+      (txSql: postgres.TransactionSql<any>) => {
+        const sql = txSql as unknown as PgSqlClient;
+        const currentStore = sqlTransactionContext.getStore() ?? {};
+        return sqlTransactionContext.run({ ...currentStore, [dbName]: sql }, () => callback(sql));
+      }
+    );
   }
 
   /**

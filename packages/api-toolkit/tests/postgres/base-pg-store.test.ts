@@ -1,11 +1,14 @@
-import assert from 'node:assert/strict';
+import * as assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { BasePgStore, sqlTransactionContext } from '../../src/postgres/base-pg-store.js';
 import { connectPostgres } from '../../src/postgres/connection.js';
 
 class TestPgStore extends BasePgStore {
   static async connect(): Promise<TestPgStore> {
-    const sql = await connectPostgres({ usageName: 'test' });
+    const sql = await connectPostgres({
+      connectionArgs: { database: 'postgres', user: 'postgres', password: 'postgres' },
+      usageName: 'test',
+    });
     return new TestPgStore(sql);
   }
 }
@@ -90,12 +93,9 @@ describe('BasePgStore', () => {
   });
 
   it('isConnected returns false when the connection is not alive', async () => {
-    const failingSql = Object.assign(
-      function sqlTag() {
-        return Promise.reject(new Error('Connection lost'));
-      },
-      {}
-    );
+    const failingSql = Object.assign(function sqlTag() {
+      return Promise.reject(new Error('Connection lost'));
+    }, {});
     Object.defineProperty(db, 'sql', {
       configurable: true,
       get: () => failingSql as typeof db.sql,

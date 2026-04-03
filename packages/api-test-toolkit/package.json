@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@types/dockerode": "^4.0.1",
-    "@types/node": "^22.14.1"
+    "@types/node": "^24.12.2"
   },
   "dependencies": {
     "dockerode": "^4.0.10"
