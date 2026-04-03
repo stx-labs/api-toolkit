@@ -1,4 +1,5 @@
 import PgMigrate from 'node-pg-migrate';
+import * as postgres from 'postgres';
 import type { Logger as PgMigrateLogger, MigrationDirection } from 'node-pg-migrate/dist/types';
 import { logger } from '../logger';
 import {
@@ -151,7 +152,7 @@ export async function dangerousDropAllTables(
   });
   const schema = sql.options.connection.search_path;
   try {
-    await sql.begin(async txSql => {
+    await sql.begin(async (txSql: postgres.TransactionSql<any>) => {
       const sql = txSql as unknown as PgSqlClient;
       const relNamesQuery = async (kind: string) => sql<{ relname: string }[]>`
         SELECT relname

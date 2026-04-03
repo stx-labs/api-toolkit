@@ -1,4 +1,6 @@
-import { getPostgres } from '../connection';
+import assert from 'node:assert/strict';
+import { describe, it } from 'node:test';
+import { getPostgres } from '../../src/postgres/connection.js';
 
 function setTestEnvVars(
   envVars: Record<string, string | undefined>,
@@ -39,7 +41,7 @@ function setTestEnvVars(
 }
 
 describe('postgres connection', () => {
-  test('postgres env var config', () => {
+  it('postgres env var config', () => {
     setTestEnvVars(
       {
         PGDATABASE: 'pg_db_db1',
@@ -52,28 +54,28 @@ describe('postgres connection', () => {
       },
       () => {
         const sql = getPostgres({ usageName: 'tests' });
-        expect(sql.options.database).toBe('pg_db_db1');
-        expect(sql.options.user).toBe('pg_user_user1');
-        expect(sql.options.pass).toBe('pg_password_password1');
-        expect(sql.options.host).toStrictEqual(['pg_host_host1']);
-        expect(sql.options.port).toStrictEqual([9876]);
-        expect(sql.options.ssl).toBe('allow');
-        expect(sql.options.connection.application_name).toBe('test-env-vars:tests');
+        assert.strictEqual(sql.options.database, 'pg_db_db1');
+        assert.strictEqual(sql.options.user, 'pg_user_user1');
+        assert.strictEqual(sql.options.pass, 'pg_password_password1');
+        assert.deepStrictEqual(sql.options.host, ['pg_host_host1']);
+        assert.deepStrictEqual(sql.options.port, [9876]);
+        assert.strictEqual(sql.options.ssl, 'allow');
+        assert.strictEqual(sql.options.connection.application_name, 'test-env-vars:tests');
       }
     );
   });
 
-  test('postgres uri config', () => {
+  it('postgres uri config', () => {
     const uri =
       'postgresql://test_user:secret_password@database.server.com:3211/test_db?ssl=true&search_path=test_schema&application_name=test-conn-str';
     const sql = getPostgres({ usageName: 'tests', connectionArgs: uri });
-    expect(sql.options.database).toBe('test_db');
-    expect(sql.options.user).toBe('test_user');
-    expect(sql.options.pass).toBe('secret_password');
-    expect(sql.options.host).toStrictEqual(['database.server.com']);
-    expect(sql.options.port).toStrictEqual([3211]);
-    expect(sql.options.ssl).toBe('true');
-    expect(sql.options.connection.search_path).toBe('test_schema');
-    expect(sql.options.connection.application_name).toBe('test-conn-str:tests');
+    assert.strictEqual(sql.options.database, 'test_db');
+    assert.strictEqual(sql.options.user, 'test_user');
+    assert.strictEqual(sql.options.pass, 'secret_password');
+    assert.deepStrictEqual(sql.options.host, ['database.server.com']);
+    assert.deepStrictEqual(sql.options.port, [3211]);
+    assert.strictEqual(sql.options.ssl, 'true');
+    assert.strictEqual(sql.options.connection.search_path, 'test_schema');
+    assert.strictEqual(sql.options.connection.application_name, 'test-conn-str:tests');
   });
 });

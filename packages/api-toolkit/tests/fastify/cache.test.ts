@@ -1,9 +1,9 @@
-import { parseIfNoneMatchHeader } from '../cache';
+import assert from 'node:assert/strict';
+import { describe, it } from 'node:test';
+import { parseIfNoneMatchHeader } from '../../src/fastify/cache.js';
 
 describe('cache', () => {
-  test('parse if-none-match header', () => {
-    // Test various combinations of etags with and without weak-validation prefix, with and without
-    // wrapping quotes, without and without spaces after commas.
+  it('parse if-none-match header', () => {
     const vectors: {
       input: string | undefined;
       output: string[] | undefined;
@@ -35,10 +35,10 @@ describe('cache', () => {
         output: ['<etag_value>', '<etag_value>', 'asdf', 'abcd', '123'],
       },
     ];
-    expect(vectors).toBeTruthy();
+    assert.ok(vectors);
     for (const entry of vectors) {
       const result = parseIfNoneMatchHeader(entry.input);
-      expect(result).toEqual(entry.output);
+      assert.deepStrictEqual(result, entry.output);
     }
   });
 });

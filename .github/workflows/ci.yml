@@ -91,7 +91,7 @@ jobs:
           npm run testenv:logs -- --no-color &> docker-compose-logs.txt &
 
       - name: Run tests
-        run: npm run test -- --coverage
+        run: npm run test:coverage -w @stacks/api-toolkit
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5

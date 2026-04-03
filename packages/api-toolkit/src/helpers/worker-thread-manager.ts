@@ -1,5 +1,7 @@
 import * as WorkerThreads from 'node:worker_threads';
+import * as fs from 'node:fs';
 import * as os from 'node:os';
+import * as path from 'node:path';
 import { EventEmitter, addAbortListener } from 'node:events';
 import { waiter, Waiter } from './time';
 import { deserializeError, isErrorLike } from './serialize-error';
@@ -123,17 +125,32 @@ export class WorkerThreadManager<TArgs extends unknown[], TResp> {
       const workerOpt: WorkerThreads.WorkerOptions = {
         workerData,
       };
-      const hasTsSource =
-        workerThreadInitFilename.endsWith('.ts') || this.workerFile.endsWith('.ts');
-      if (hasTsSource) {
+      const resolvedInit =
+        workerThreadInitFilename.endsWith('.ts')
+          ? path.join(
+              path.dirname(workerThreadInitFilename),
+              '../../dist/helpers/worker-thread-init.js'
+            )
+          : workerThreadInitFilename;
+      if (
+        resolvedInit !== workerThreadInitFilename &&
+        !fs.existsSync(resolvedInit)
+      ) {
+        throw new Error(
+          `Missing compiled worker thread bootstrap at ${resolvedInit}. Run \`npm run build\` in @stacks/api-toolkit before running tests that use worker threads.`
+        );
+      }
+      const needsTsLoader =
+        resolvedInit.endsWith('.ts') || this.workerFile.endsWith('.ts');
+      if (needsTsLoader) {
         if (process.env.NODE_ENV !== 'test') {
           throw new Error(
-            'Worker threads are being created with ts-node outside of a test environment'
+            'Worker threads are being created with TypeScript sources outside of a test environment'
           );
         }
-        workerOpt.execArgv = ['-r', 'ts-node/register/transpile-only'];
+        workerOpt.execArgv = ['--import', 'tsx'];
       }
-      const worker = new WorkerThreads.Worker(workerThreadInitFilename, workerOpt);
+      const worker = new WorkerThreads.Worker(resolvedInit, workerOpt);
       worker.unref();
       this.workers.add(worker);
       worker.on('error', err => {

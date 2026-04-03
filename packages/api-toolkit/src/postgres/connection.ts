@@ -1,13 +1,17 @@
-import * as postgres from 'postgres';
+import * as postgresImport from 'postgres';
 import { logger } from '../logger';
 import { isPgConnectionError } from './errors';
 import { stopwatch, timeout } from '../helpers/time';
 import { PG_TYPE_MAPPINGS } from './types';
 
+/** `export =` package: under ESM/tsx the callable is often `default`; CJS `import *` is the function. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const postgres = ((postgresImport as any).default ?? postgresImport) as typeof postgresImport;
+
 /** Postgres client instance */
-export type PgSqlClient = postgres.Sql<any>;
+export type PgSqlClient = postgresImport.Sql<any>;
 /** Postgres pending query or query fragment */
-export type PgSqlQuery = postgres.PendingQuery<postgres.Row[]>;
+export type PgSqlQuery = postgresImport.PendingQuery<postgresImport.Row[]>;
 export type PgSslMode = 'require' | 'allow' | 'prefer' | 'verify-full' | boolean | object;
 
 /** Postgres connection URI string */
