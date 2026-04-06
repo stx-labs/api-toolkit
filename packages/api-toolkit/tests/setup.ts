@@ -22,7 +22,7 @@ export async function globalSetup() {
   for (const config of containers) {
     await dockerTestUp({ config });
   }
-  process.stdout.write(`[testenv:api] all containers ready\n`);
+  process.stdout.write(`[testenv] all containers ready\n`);
 }
 
 export async function globalTeardown() {
@@ -30,5 +30,5 @@ export async function globalTeardown() {
   for (const config of [...containers].reverse()) {
     await dockerTestDown({ config });
   }
-  process.stdout.write(`[testenv:api] all containers removed\n`);
+  process.stdout.write(`[testenv] all containers removed\n`);
 }
