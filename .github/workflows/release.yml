@@ -30,8 +30,11 @@ jobs:
       - name: Install deps
         run: npm ci --audit=false
 
-      - name: Publish to npm
-        run: npm publish --provenance --access public
+      - name: Publish @stacks/api-toolkit to npm
+        run: npm publish --provenance --access public -w @stacks/api-toolkit
+
+      - name: Publish @stacks/api-test-toolkit to npm
+        run: npm publish --provenance --access public -w @stacks/api-test-toolkit
 
   github-release:
     runs-on: ubuntu-latest

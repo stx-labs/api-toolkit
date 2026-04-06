@@ -1,0 +1,55 @@
+{
+  "name": "@stacks/api-toolkit",
+  "version": "1.13.0",
+  "description": "API development toolkit",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf ./dist && tsc --project tsconfig.build.json && copyfiles -u 1 ./src/server-version/*.mjs ./dist",
+    "pretest": "npm run build --prefix ../..",
+    "test": "NODE_ENV=test node --import tsx --test --test-global-setup=./tests/setup.ts --test-concurrency=1 \"tests/**/*.test.ts\"",
+    "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx -f unix",
+    "lint:prettier": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "testenv:run": "docker compose -f ../../docker/docker-compose.dev.postgres.yml up",
+    "testenv:stop": "docker compose -f ../../docker/docker-compose.dev.postgres.yml down -v -t 0",
+    "testenv:logs": "docker compose -f ../../docker/docker-compose.dev.postgres.yml logs -t -f",
+    "prepublishOnly": "npm run build"
+  },
+  "bin": {
+    "api-toolkit-git-info": "./bin/api-toolkit-git-info.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stx-labs/api-toolkit.git",
+    "directory": "packages/api-toolkit"
+  },
+  "keywords": [
+    "api",
+    "toolkit"
+  ],
+  "files": [
+    "dist/",
+    "bin/"
+  ],
+  "author": "Stacks Labs",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/stx-labs/api-toolkit/issues"
+  },
+  "homepage": "https://github.com/stx-labs/api-toolkit#readme",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@fastify/swagger": "^9.7.0",
+    "@fastify/type-provider-typebox": "^6.1.0",
+    "@sinclair/typebox": "^0.34.48",
+    "@types/node": "^24.12.2",
+    "fastify": "^5.8.4",
+    "fastify-metrics": "^12.1.0",
+    "node-pg-migrate": "^7.9.1",
+    "pino": "^8.11.0",
+    "postgres": "^3.4.8"
+  }
+}

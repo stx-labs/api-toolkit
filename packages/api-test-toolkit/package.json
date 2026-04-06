@@ -1,0 +1,42 @@
+{
+  "name": "@stacks/api-test-toolkit",
+  "version": "1.13.0",
+  "description": "Test utilities for @stacks/api-toolkit",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf dist && tsc --project tsconfig.build.json",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stx-labs/api-toolkit.git",
+    "directory": "packages/api-test-toolkit"
+  },
+  "keywords": [
+    "api",
+    "testing"
+  ],
+  "files": [
+    "dist"
+  ],
+  "author": "Stacks Labs",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/stx-labs/api-toolkit/issues"
+  },
+  "homepage": "https://github.com/stx-labs/api-toolkit#readme",
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "@stacks/api-toolkit": "^1.12.2"
+  },
+  "devDependencies": {
+    "@types/dockerode": "^4.0.1",
+    "@types/node": "^24.12.2"
+  },
+  "dependencies": {
+    "dockerode": "^4.0.10"
+  }
+}
