@@ -5,3 +5,10 @@ export {
   dockerTestLogs,
   dockerTestUp,
 } from './docker-container';
+export {
+  type DockerComposeTestConfig,
+  type DockerComposeReadiness,
+  dockerComposeTestDown,
+  dockerComposeTestLogs,
+  dockerComposeTestUp,
+} from './docker-compose';
